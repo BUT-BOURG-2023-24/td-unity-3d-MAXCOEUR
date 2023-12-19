@@ -9,6 +9,8 @@ public class MoveByJoystick : MonoBehaviour
     public Joystick joystick;
     public float speed = 10.0f;
     public Rigidbody rb;
+    public Animator animator;
+    public GourndCheck GourndCheck;
     void Start()
     {
     }
@@ -17,7 +19,12 @@ public class MoveByJoystick : MonoBehaviour
     void Update()
     {
         Vector2 inputMovement = joystick.Direction;
-
         rb.velocity = new Vector3(inputMovement.x * speed, rb.velocity.y, inputMovement.y * speed);
+        if (animator!=null)
+        {
+            animator.SetFloat("speed", inputMovement.magnitude);
+            animator.SetBool("isGrounded", GourndCheck.getIsGround());
+        }
+        
     }
 }

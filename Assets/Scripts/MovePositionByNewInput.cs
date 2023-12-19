@@ -7,6 +7,9 @@ public class MovePositionByNewInput : MonoBehaviour
 {
     public float speed = 10.0f;
     public InputActionReference moveInputRef;
+
+    public Animator animator;
+    public GourndCheck GourndCheck;
     void Start()
     {
     }
@@ -17,5 +20,11 @@ public class MovePositionByNewInput : MonoBehaviour
         Vector2 inputMovement = moveInputRef.action.ReadValue<Vector2>();
 
         transform.position += new Vector3(inputMovement.x*speed*Time.deltaTime,0,inputMovement.y*speed*Time.deltaTime);
+
+        if (animator != null)
+        {
+            animator.SetFloat("speed", inputMovement.magnitude);
+            animator.SetBool("isGrounded", GourndCheck.getIsGround());
+        }
     }
 }

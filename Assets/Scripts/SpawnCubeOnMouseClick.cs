@@ -15,7 +15,7 @@ public class SpawnCubeOnMouseClick : MonoBehaviour
 
     private void OnEnable()
     {
-        ClickAction.action.performed += Action_performed;
+        //ClickAction.action.performed += Action_performed;
         EnhancedTouch.TouchSimulation.Enable();
         EnhancedTouch.EnhancedTouchSupport.Enable();
         EnhancedTouch.Touch.onFingerDown += Touch_onFingerDown;
@@ -25,7 +25,7 @@ public class SpawnCubeOnMouseClick : MonoBehaviour
 
     private void OnDisable()
     {
-        ClickAction.action.performed -= Action_performed;
+        //ClickAction.action.performed -= Action_performed;
         EnhancedTouch.TouchSimulation.Disable();
         EnhancedTouch.EnhancedTouchSupport.Disable();
         EnhancedTouch.Touch.onFingerDown -= Touch_onFingerDown;
@@ -39,14 +39,16 @@ public class SpawnCubeOnMouseClick : MonoBehaviour
         
     }
 
-    private void Touch_onFingerDown(EnhancedTouch.Finger obj)
+    private void Touch_onFingerDown(EnhancedTouch.Finger finger)
     {
-        RectTransform vec = (joystick.transform as RectTransform);
+        RectTransform joystickRect = (joystick.transform as RectTransform);
 
-        if(!(obj.screenPosition.x > vec.offsetMin.x && obj.screenPosition.x < vec.offsetMax.x) ||
-           !(obj.screenPosition.x > vec.offsetMin.y && obj.screenPosition.y < vec.offsetMax.y))
+        bool xIn = joystickRect.offsetMin.x <= finger.screenPosition.x && finger.screenPosition.x <= joystickRect.offsetMax.x;
+        bool yIn = joystickRect.offsetMin.y <= finger.screenPosition.y && finger.screenPosition.y <= joystickRect.offsetMax.y;
+
+        if (!(xIn && yIn))
         {
-            spawnCube(obj.screenPosition);
+            spawnCube(finger.screenPosition);
         }        
     }
 
